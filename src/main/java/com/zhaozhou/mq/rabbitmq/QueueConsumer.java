@@ -12,6 +12,7 @@ import java.io.IOException;
  */
 public class QueueConsumer extends  EndPoint implements Runnable, Consumer {
 
+
     public QueueConsumer(String endPointName) throws IOException {
         super(endPointName);
     }

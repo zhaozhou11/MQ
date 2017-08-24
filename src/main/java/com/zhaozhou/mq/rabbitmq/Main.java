@@ -14,10 +14,13 @@ public class Main {
 
             Producer producer = new Producer("queue");
 
-            for(int i = 0; i < 100; i ++){
+            Long startTs = System.currentTimeMillis();
+            for(int i = 0; i < 1000000; i ++){
                 producer.sendMessage("I'm " + i);
                 System.out.println("Producer send " + i);
             }
+
+            System.out.println("total seconds=" + (System.currentTimeMillis() - startTs)/1000);
         }catch (IOException e){
             e.printStackTrace();
         }

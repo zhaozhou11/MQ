@@ -1,26 +1,34 @@
-package com.zhaozhou.mq.rabbitmq.fanout;
+package com.zhaozhou.mq.rabbitmq.direct;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
 import com.zhaozhou.mq.rabbitmq.ChannelFactory;
 
 /**
- * Created by zhaozhou on 2017-08-24.
+ * Created by zhaozhou on 2017-08-25.
  */
-public class FanoutConsumer implements Runnable{
+public class DirectConsumer implements Runnable{
+    final static String EXCHANGE_NAME = "zhaozhou_direct";
 
-    final static String EXCHANGE_NAME = "zhaozhou_fanout";
+    private int cnt = 0;
 
+    public DirectConsumer() {
+    }
+
+    public DirectConsumer(int cnt) {
+        this.cnt = cnt;
+    }
 
     public void run(){
         try {
-            Channel channel = ChannelFactory.getChannel(EXCHANGE_NAME,"fanout");
+            Channel channel = ChannelFactory.getChannel(EXCHANGE_NAME,"direct");
             if(channel == null){
                 System.out.println("get channel fail!");
                 return;
             }
-            String queneName = channel.queueDeclare().getQueue();
-            channel.queueBind(queneName, EXCHANGE_NAME, "");
+            String queneName = "zhaozhou";
+            channel.queueDeclare(queneName,false,false,false,null);
+            channel.queueBind(queneName, EXCHANGE_NAME, "zhaozhou."+cnt);
             System.out.println("queue:" + queneName);
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
